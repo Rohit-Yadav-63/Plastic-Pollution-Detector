@@ -1,0 +1,1 @@
+export const demoCategoryData=[{name:"Bottle",count:0},{name:"Food wrapper",count:0},{name:"Fishing line",count:0},{name:"Fragment",count:0},{name:"Bag",count:0}];

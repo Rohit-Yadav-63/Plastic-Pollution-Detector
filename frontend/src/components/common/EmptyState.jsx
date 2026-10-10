@@ -1,0 +1,2 @@
+import { FileSearch } from "lucide-react";
+export default function EmptyState({title,description,action,icon:Icon=FileSearch}){return <div className="flex flex-col items-center rounded-2xl border border-dashed border-line bg-slate-50/60 px-6 py-12 text-center"><span className="rounded-2xl bg-[#eef5f1] p-3 text-forest"><Icon size={22}/></span><h3 className="mt-4 font-semibold">{title}</h3>{description&&<p className="mt-2 max-w-sm text-sm text-slate-500">{description}</p>}{action&&<div className="mt-5">{action}</div>}</div>}

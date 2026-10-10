@@ -1,0 +1,3 @@
+import { useLocation } from "react-router-dom";
+const titles={"/":"Dashboard","/analyze":"Analyze image","/history":"Analysis history","/about":"About project","/settings":"Settings"};
+export default function Header(){const {pathname}=useLocation(),title=pathname.startsWith("/results/")?"Analysis results":titles[pathname]||"Plastic Pollution Analyzer";return <header className="flex h-[72px] items-center justify-between border-b border-line bg-white px-6"><div><p className="text-xs text-slate-400">Plastic Pollution Analyzer</p><h1 className="text-sm font-semibold">{title}</h1></div><span className="rounded-full border border-[#dcebe2] bg-[#f5faf6] px-3 py-1.5 text-xs font-medium text-forest">Frontend demo</span></header>}

@@ -1,0 +1,10 @@
+import {AlertCircle,Info} from "lucide-react";
+import {useState} from "react";
+import {useNavigate} from "react-router-dom";
+import Button from "../components/common/Button";
+import UploadDropzone from "../components/analysis/UploadDropzone";
+import ImagePreview from "../components/analysis/ImagePreview";
+import useAnalysis from "../hooks/useAnalysis";
+import {saveAnalysis} from "../utils/storage";
+import {createImageThumbnail} from "../utils/imageThumbnail";
+export default function AnalyzeImage(){const[file,setFile]=useState(null),[fileError,setFileError]=useState(""),{loading,error,analyze,reset}=useAnalysis(),navigate=useNavigate();function select(f){setFile(null);setFileError("");reset();if(f.size>15*1024*1024){setFileError("Choose an image smaller than 15 MB.");return}setFile(f)}async function run(){if(!file)return;const result=await analyze(file,await createImageThumbnail(file));if(result){saveAnalysis(result);navigate("/results/"+result.id,{state:{analysis:result}})}}return <div className="mx-auto max-w-4xl"><p className="text-sm font-medium text-forest">Image analysis</p><h2 className="page-title mt-2">Upload an image</h2><p className="page-subtitle">Add a shoreline, waterway, or field image to view a sample report.</p><div className="mt-7 grid gap-5"><UploadDropzone onFile={select} disabled={loading}/>{file&&<ImagePreview file={file} onRemove={()=>{setFile(null);reset()}}/>}{(fileError||error)&&<p role="alert" className="flex gap-2 text-sm text-rose-700"><AlertCircle size={17}/>{fileError||error}</p>}<div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-[#e3ece6] bg-[#f8fbf8] p-4"><p className="flex max-w-xl gap-2 text-xs leading-5 text-slate-600"><Info size={16} className="shrink-0 text-forest"/>Results are generated locally as examples. Your image is not sent to a server or analyzed by a real model.</p><Button disabled={!file} loading={loading} onClick={run}>{loading?"Preparing demo…":"Generate demo analysis"}</Button></div></div></div>}
