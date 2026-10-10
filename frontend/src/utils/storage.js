@@ -1,4 +1,5 @@
 const KEY="plastic-pollution-analyzer.analyses";
 export function getAnalyses(){try{const x=JSON.parse(localStorage.getItem(KEY)||"[]");return Array.isArray(x)?x:[]}catch{return[]}}
-export function saveAnalysis(x){try{localStorage.setItem(KEY,JSON.stringify([x,...getAnalyses().filter(y=>y.id!==x.id)].slice(0,20)));return true}catch{return false}}
+function withoutExactCoordinates(analysis){const metadata={...(analysis.metadata||{})};if(metadata.photoGps){metadata.photoGpsAvailable=true;metadata.photoGpsOmittedForPrivacy=true;delete metadata.photoGps}if(metadata.currentDeviceLocation){metadata.currentDeviceLocationAvailable=true;metadata.currentDeviceLocationOmittedForPrivacy=true;delete metadata.currentDeviceLocation}return {...analysis,metadata}}
+export function saveAnalysis(x){try{const safe=withoutExactCoordinates(x);localStorage.setItem(KEY,JSON.stringify([safe,...getAnalyses().filter(y=>y.id!==x.id)].slice(0,20)));return true}catch{return false}}
 export function clearHistory(){localStorage.removeItem(KEY)}
