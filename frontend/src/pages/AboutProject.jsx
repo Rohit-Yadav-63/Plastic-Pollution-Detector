@@ -1,3 +1,51 @@
-import {Boxes,Code2,Leaf,ShieldCheck} from "lucide-react";
-const rows=[[Leaf,"Environmental focus","Organize plastic debris image-analysis results."],[Boxes,"Modular frontend","Reusable components keep presentation separate from service logic."],[Code2,"Integration ready","A centralized API client prepares the UI for a future backend."],[ShieldCheck,"Transparent demo","Sample detections and severity values are labeled simulated."]];
-export default function AboutProject(){return <div className="mx-auto max-w-5xl"><p className="text-sm font-medium text-forest">Project overview</p><h2 className="page-title mt-2">About Plastic Pollution Analyzer</h2><p className="page-subtitle">A frontend demonstration for an environmental analytics project.</p><div className="mt-7 grid gap-4 md:grid-cols-2">{rows.map(([Icon,title,text])=><article className="panel p-5" key={title}><Icon className="text-forest"/><h3 className="mt-4 font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-slate-500">{text}</p></article>)}</div><p className="mt-5 rounded-xl bg-[#f7faf7] p-4 text-sm leading-6 text-slate-600">A future service can implement POST /api/analyze. Current output is generated locally; no model inference runs.</p></div>}
+import { Boxes, Code2, Leaf, ShieldCheck } from "lucide-react";
+
+const rows = [
+  [
+    Leaf,
+    "Environmental focus",
+    "Organize plastic debris image-analysis results.",
+  ],
+  [
+    Boxes,
+    "Modular frontend",
+    "Reusable components keep presentation separate from service logic.",
+  ],
+  [
+    Code2,
+    "Integration ready",
+    "A centralized API client prepares the UI for a future backend.",
+  ],
+  [
+    ShieldCheck,
+    "Transparent demo",
+    "Sample detections and severity values are labeled simulated.",
+  ],
+];
+
+export default function AboutProject() {
+  return (
+    <div className="mx-auto max-w-5xl">
+      <p className="text-sm font-medium text-forest">Project overview</p>
+      <h2 className="page-title mt-2">About Plastic Pollution Analyzer</h2>
+      <p className="page-subtitle">
+        A frontend demonstration for an environmental analytics project.
+      </p>
+
+      <div className="mt-7 grid gap-4 md:grid-cols-2">
+        {rows.map(([Icon, title, text]) => (
+          <article className="panel p-5" key={title}>
+            <Icon className="text-forest" />
+            <h3 className="mt-4 font-semibold">{title}</h3>
+            <p className="mt-2 text-sm leading-6 text-slate-500">{text}</p>
+          </article>
+        ))}
+      </div>
+
+      <p className="mt-5 rounded-xl bg-[#f7faf7] p-4 text-sm leading-6 text-slate-600">
+        A future service can implement POST /api/analyze. Current output is
+        generated locally; no model inference runs.
+      </p>
+    </div>
+  );
+}

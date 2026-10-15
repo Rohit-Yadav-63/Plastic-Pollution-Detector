@@ -1,2 +1,12 @@
 import { LoaderCircle } from "lucide-react";
-export default function LoadingSpinner({label="Loading"}){return <div role="status" className="flex items-center gap-2 text-sm text-slate-500"><LoaderCircle size={18} className="animate-spin text-forest"/>{label}</div>}
+export default function LoadingSpinner({ label = "Loading" }) {
+  return (
+    <div
+      role="status"
+      className="flex items-center gap-2 text-sm text-slate-500"
+    >
+      <LoaderCircle size={18} className="animate-spin text-forest" />
+      {label}
+    </div>
+  );
+}

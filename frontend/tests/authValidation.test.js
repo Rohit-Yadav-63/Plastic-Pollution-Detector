@@ -1,5 +1,46 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { validateLogin, validateSignup } from "../src/utils/authValidation.js";
-test("login requires a valid email and nonempty password",()=>{assert.deepEqual(validateLogin("",""),{email:"Enter your email address.",password:"Enter your password."});assert.equal(validateLogin("bad-address","x").email,"Enter a valid email address.");assert.deepEqual(validateLogin("student@example.com","demo"),{})});
-test("signup checks required fields, password rules, confirmation, and terms",()=>{const empty=validateSignup({fullName:"",email:"bad",password:"weak",confirmPassword:"",terms:false});assert.ok(empty.fullName);assert.equal(empty.email,"Enter a valid email address.");assert.ok(empty.password);assert.equal(empty.confirmPassword,"Confirm your password.");assert.ok(empty.terms);const mismatch=validateSignup({fullName:"Student",email:"s@example.com",password:"Strong123",confirmPassword:"Other123",terms:true});assert.equal(mismatch.confirmPassword,"Passwords do not match.");assert.deepEqual(validateSignup({fullName:"Student",email:"s@example.com",password:"Strong123",confirmPassword:"Strong123",terms:true}),{})});
+test("login requires a valid email and nonempty password", () => {
+  assert.deepEqual(validateLogin("", ""), {
+    email: "Enter your email address.",
+    password: "Enter your password.",
+  });
+  assert.equal(
+    validateLogin("bad-address", "x").email,
+    "Enter a valid email address.",
+  );
+  assert.deepEqual(validateLogin("student@example.com", "demo"), {});
+});
+test("signup checks required fields, password rules, confirmation, and terms", () => {
+  const empty = validateSignup({
+    fullName: "",
+    email: "bad",
+    password: "weak",
+    confirmPassword: "",
+    terms: false,
+  });
+  assert.ok(empty.fullName);
+  assert.equal(empty.email, "Enter a valid email address.");
+  assert.ok(empty.password);
+  assert.equal(empty.confirmPassword, "Confirm your password.");
+  assert.ok(empty.terms);
+  const mismatch = validateSignup({
+    fullName: "Student",
+    email: "s@example.com",
+    password: "Strong123",
+    confirmPassword: "Other123",
+    terms: true,
+  });
+  assert.equal(mismatch.confirmPassword, "Passwords do not match.");
+  assert.deepEqual(
+    validateSignup({
+      fullName: "Student",
+      email: "s@example.com",
+      password: "Strong123",
+      confirmPassword: "Strong123",
+      terms: true,
+    }),
+    {},
+  );
+});

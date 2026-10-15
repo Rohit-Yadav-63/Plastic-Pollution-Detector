@@ -21,7 +21,10 @@ export function AuthProvider({ children }) {
     busy,
     login: (credentials) => run(() => authService.login(credentials)),
     signup: (credentials) => run(() => authService.signup(credentials)),
-    logout: async () => { await authService.logout(); setUser(null); },
+    logout: async () => {
+      await authService.logout();
+      setUser(null);
+    },
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

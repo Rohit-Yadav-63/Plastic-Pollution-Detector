@@ -1,2 +1,42 @@
 import { CATEGORY_COLORS, CATEGORY_ORDER } from "../../utils/categories";
-export default function CategoryBreakdown({data,total}){if(!total)return <div className="grid min-h-[240px] place-items-center text-sm text-slate-400">Run a demo analysis to see category totals.</div>;return <ul className="space-y-3.5">{CATEGORY_ORDER.map((name,i)=>{const count=data[name]||0,percent=Math.round(count/total*100);return <li key={name}><div className="mb-1 flex items-center justify-between gap-2 text-xs"><span className="flex min-w-0 items-center gap-2"><i className="h-2.5 w-2.5 shrink-0 rounded-full" style={{background:CATEGORY_COLORS[i]}}/><span className="truncate">{name}</span></span><b className="shrink-0 font-medium">{count} items ({percent}%)</b></div><div className="h-2 overflow-hidden rounded-full bg-[#e4eee7]"><div className="h-full rounded-full" style={{width:percent+"%",background:CATEGORY_COLORS[i]}}/></div></li>})}</ul>}
+
+export default function CategoryBreakdown({ data, total }) {
+  if (!total)
+    return (
+      <div className="grid min-h-[240px] place-items-center text-sm text-slate-400">
+        Run a demo analysis to see category totals.
+      </div>
+    );
+
+  return (
+    <ul className="space-y-3.5">
+      {CATEGORY_ORDER.map((name, i) => {
+        const count = data[name] || 0,
+          percent = Math.round((count / total) * 100);
+
+        return (
+          <li key={name}>
+            <div className="mb-1 flex items-center justify-between gap-2 text-xs">
+              <span className="flex min-w-0 items-center gap-2">
+                <i
+                  className="h-2.5 w-2.5 shrink-0 rounded-full"
+                  style={{ background: CATEGORY_COLORS[i] }}
+                />
+                <span className="truncate">{name}</span>
+              </span>
+              <b className="shrink-0 font-medium">
+                {count} items ({percent}%)
+              </b>
+            </div>
+            <div className="h-2 overflow-hidden rounded-full bg-[#e4eee7]">
+              <div
+                className="h-full rounded-full"
+                style={{ width: percent + "%", background: CATEGORY_COLORS[i] }}
+              />
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}

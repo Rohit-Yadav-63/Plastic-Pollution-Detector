@@ -1,1 +1,37 @@
-export default function AnnotatedImage({analysis}){return <div className="relative overflow-hidden rounded-2xl border border-line bg-slate-50">{analysis.previewDataUrl?<img src={analysis.previewDataUrl} alt="Uploaded image with simulated boxes" className="block max-h-[560px] w-full object-contain"/>:<div className="grid min-h-60 place-items-center text-sm text-slate-400">Preview unavailable</div>}{analysis.previewDataUrl&&<div className="pointer-events-none absolute inset-0">{analysis.detections.map(d=><div key={d.id} className="absolute border-2 border-sage bg-sage/10" style={{left:d.box.x*100+"%",top:d.box.y*100+"%",width:d.box.width*100+"%",height:d.box.height*100+"%"}}><span className="absolute -top-5 whitespace-nowrap bg-forest px-1 text-[10px] text-white">{d.category} · {Math.round(d.confidence*100)}%</span></div>)}</div>}</div>}
+export default function AnnotatedImage({ analysis }) {
+  return (
+    <div className="relative overflow-hidden rounded-2xl border border-line bg-slate-50">
+      {analysis.previewDataUrl ? (
+        <img
+          src={analysis.previewDataUrl}
+          alt="Uploaded image with simulated boxes"
+          className="block max-h-[560px] w-full object-contain"
+        />
+      ) : (
+        <div className="grid min-h-60 place-items-center text-sm text-slate-400">
+          Preview unavailable
+        </div>
+      )}
+      {analysis.previewDataUrl && (
+        <div className="pointer-events-none absolute inset-0">
+          {analysis.detections.map((d) => (
+            <div
+              key={d.id}
+              className="absolute border-2 border-sage bg-sage/10"
+              style={{
+                left: d.box.x * 100 + "%",
+                top: d.box.y * 100 + "%",
+                width: d.box.width * 100 + "%",
+                height: d.box.height * 100 + "%",
+              }}
+            >
+              <span className="absolute -top-5 whitespace-nowrap bg-forest px-1 text-[10px] text-white">
+                {d.category} · {Math.round(d.confidence * 100)}%
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

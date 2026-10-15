@@ -1,4 +1,12 @@
-﻿const categories = ["Bottle", "Food wrapper", "Fishing line", "Fragment", "Bag", "Straw", "EPS"];
+﻿const categories = [
+  "Bottle",
+  "Food wrapper",
+  "Fishing line",
+  "Fragment",
+  "Bag",
+  "Straw",
+  "EPS",
+];
 
 export function generateDemoAnalysis(file, previewDataUrl = "", metadata = {}) {
   const seed = ((file?.size || 173) + (file?.name?.length || 7) * 31) % 997;
@@ -22,7 +30,8 @@ export function generateDemoAnalysis(file, previewDataUrl = "", metadata = {}) {
     counts[item.category] = (counts[item.category] || 0) + 1;
     return counts;
   }, {});
-  const averageConfidence = detections.reduce((sum, item) => sum + item.confidence, 0) / count;
+  const averageConfidence =
+    detections.reduce((sum, item) => sum + item.confidence, 0) / count;
   const severityScore = Math.min(94, 18 + count * 11 + (seed % 20));
   return {
     id: "demo-" + (crypto.randomUUID?.() || Date.now()),
@@ -31,7 +40,8 @@ export function generateDemoAnalysis(file, previewDataUrl = "", metadata = {}) {
     mode: "simulated",
     isSimulated: true,
     severityScore,
-    severityLabel: severityScore >= 68 ? "High" : severityScore >= 42 ? "Medium" : "Low",
+    severityLabel:
+      severityScore >= 68 ? "High" : severityScore >= 42 ? "Medium" : "Low",
     averageConfidence: Number(averageConfidence.toFixed(2)),
     detections,
     categoryCounts,

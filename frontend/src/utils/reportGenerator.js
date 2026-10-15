@@ -1,3 +1,72 @@
-const cell=x=>'"'+String(x??"").replace(/"/g,'""')+'"';
-export function createCsv(items,{includeExactLocation=false}={}){const rows=[["File name","Analyzed at","Photo captured on","Mode","Severity","Score","Detections","Average confidence","Image dimensions","File size bytes","Manual location","Location source",...(includeExactLocation?["Photo GPS latitude","Photo GPS longitude","Current device latitude","Current device longitude"]:[])]];items.forEach(x=>{const m=x.metadata||{},sources=[m.photoGps?"EXIF photo GPS":null,m.manualLocationName?"Manual entry":null,m.currentDeviceLocation?"Current device GPS":null].filter(Boolean).join("; ")||"Unavailable";rows.push([x.fileName,x.analyzedAt,m.photoCaptureDate||"",x.isSimulated?"Simulated":"API",x.severityLabel,x.severityScore,x.detections?.length||0,Math.round((x.averageConfidence||0)*100)+"%",m.width&&m.height?m.width+" x "+m.height:"",m.fileSizeBytes||"",m.manualLocationName||"",sources,...(includeExactLocation?[m.photoGps?.latitude??"",m.photoGps?.longitude??"",m.currentDeviceLocation?.latitude??"",m.currentDeviceLocation?.longitude??""]:[])])});return "\ufeff"+rows.map(r=>r.map(cell).join(",")).join("\r\n")}
-export function downloadCsv(items,options={}){const blob=new Blob([createCsv(items,options)],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="plastic-pollution-analysis.csv";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+const cell = (x) => '"' + String(x ?? "").replace(/"/g, '""') + '"';
+export function createCsv(items, { includeExactLocation = false } = {}) {
+  const rows = [
+    [
+      "File name",
+      "Analyzed at",
+      "Photo captured on",
+      "Mode",
+      "Severity",
+      "Score",
+      "Detections",
+      "Average confidence",
+      "Image dimensions",
+      "File size bytes",
+      "Manual location",
+      "Location source",
+      ...(includeExactLocation
+        ? [
+            "Photo GPS latitude",
+            "Photo GPS longitude",
+            "Current device latitude",
+            "Current device longitude",
+          ]
+        : []),
+    ],
+  ];
+  items.forEach((x) => {
+    const m = x.metadata || {},
+      sources =
+        [
+          m.photoGps ? "EXIF photo GPS" : null,
+          m.manualLocationName ? "Manual entry" : null,
+          m.currentDeviceLocation ? "Current device GPS" : null,
+        ]
+          .filter(Boolean)
+          .join("; ") || "Unavailable";
+    rows.push([
+      x.fileName,
+      x.analyzedAt,
+      m.photoCaptureDate || "",
+      x.isSimulated ? "Simulated" : "API",
+      x.severityLabel,
+      x.severityScore,
+      x.detections?.length || 0,
+      Math.round((x.averageConfidence || 0) * 100) + "%",
+      m.width && m.height ? m.width + " x " + m.height : "",
+      m.fileSizeBytes || "",
+      m.manualLocationName || "",
+      sources,
+      ...(includeExactLocation
+        ? [
+            m.photoGps?.latitude ?? "",
+            m.photoGps?.longitude ?? "",
+            m.currentDeviceLocation?.latitude ?? "",
+            m.currentDeviceLocation?.longitude ?? "",
+          ]
+        : []),
+    ]);
+  });
+  return "\ufeff" + rows.map((r) => r.map(cell).join(",")).join("\r\n");
+}
+export function downloadCsv(items, options = {}) {
+  const blob = new Blob([createCsv(items, options)], {
+      type: "text/csv;charset=utf-8",
+    }),
+    url = URL.createObjectURL(blob),
+    a = document.createElement("a");
+  a.href = url;
+  a.download = "plastic-pollution-analysis.csv";
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}

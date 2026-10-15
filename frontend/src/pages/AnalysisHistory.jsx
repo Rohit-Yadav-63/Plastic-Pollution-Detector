@@ -1,11 +1,113 @@
-import {Download,Trash2} from "lucide-react";
-import {Link} from "react-router-dom";
-import {useState} from "react";
+import { Download, Trash2 } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 import Button from "../components/common/Button";
 import ConfirmDialog from "../components/common/ConfirmDialog";
 import EmptyState from "../components/common/EmptyState";
 import SeverityBadge from "../components/analysis/SeverityBadge";
-import {clearHistory,getAnalyses} from "../utils/storage";
-import {downloadCsv} from "../utils/reportGenerator";
-import {formatDate} from "../utils/formatters";
-export default function AnalysisHistory(){const[items,setItems]=useState(getAnalyses),[confirm,setConfirm]=useState(false);function clear(){clearHistory();setItems([]);setConfirm(false)}return <div><div className="flex flex-wrap items-end justify-between gap-4"><div><h2 className="page-title">Analysis history</h2><p className="page-subtitle">Simulated results saved in this browser.</p></div>{items.length>0&&<div className="flex gap-2"><Button variant="secondary" onClick={()=>downloadCsv(items)}><Download size={16}/>Export CSV</Button><Button variant="secondary" onClick={()=>setConfirm(true)} aria-label="Clear history"><Trash2 size={16}/></Button></div>}</div><div className="panel mt-6 overflow-hidden">{!items.length?<div className="p-5"><EmptyState title="Your history is empty" description="Run a demo analysis and it will appear here." action={<Link to="/analyze"><Button>Start an analysis</Button></Link>}/></div>:<div className="overflow-x-auto"><table className="w-full min-w-[600px] text-left"><thead className="bg-slate-50 text-xs uppercase text-slate-400"><tr>{["Image","Date","Detections","Severity","Mode"].map(x=><th key={x} className="px-5 py-4">{x}</th>)}</tr></thead><tbody className="divide-y divide-line">{items.map(x=><tr key={x.id}><td className="px-5 py-4"><Link to={"/results/"+x.id} state={{analysis:x}} className="font-medium text-forest">{x.fileName}</Link></td><td className="px-5 py-4 text-sm text-slate-500">{formatDate(x.analyzedAt)}</td><td className="px-5 py-4 text-sm">{x.detections.length}</td><td className="px-5 py-4"><SeverityBadge severity={x.severityLabel}/></td><td className="px-5 py-4 text-xs">Simulated</td></tr>)}</tbody></table></div>}</div><ConfirmDialog open={confirm} title="Clear analysis history?" description="This removes saved demo results from this browser." onCancel={()=>setConfirm(false)} onConfirm={clear}/></div>}
+import { clearHistory, getAnalyses } from "../utils/storage";
+import { downloadCsv } from "../utils/reportGenerator";
+import { formatDate } from "../utils/formatters";
+
+export default function AnalysisHistory() {
+  const [items, setItems] = useState(getAnalyses),
+    [confirm, setConfirm] = useState(false);
+
+  function clear() {
+    clearHistory();
+    setItems([]);
+    setConfirm(false);
+  }
+
+  return (
+    <div>
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h2 className="page-title">Analysis history</h2>
+          <p className="page-subtitle">
+            Simulated results saved in this browser.
+          </p>
+        </div>
+
+        {items.length > 0 && (
+          <div className="flex gap-2">
+            <Button variant="secondary" onClick={() => downloadCsv(items)}>
+              <Download size={16} />
+              Export CSV
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => setConfirm(true)}
+              aria-label="Clear history"
+            >
+              <Trash2 size={16} />
+            </Button>
+          </div>
+        )}
+      </div>
+
+      <div className="panel mt-6 overflow-hidden">
+        {!items.length ? (
+          <div className="p-5">
+            <EmptyState
+              title="Your history is empty"
+              description="Run a demo analysis and it will appear here."
+              action={
+                <Link to="/analyze">
+                  <Button>Start an analysis</Button>
+                </Link>
+              }
+            />
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[600px] text-left">
+              <thead className="bg-slate-50 text-xs uppercase text-slate-400">
+                <tr>
+                  {["Image", "Date", "Detections", "Severity", "Mode"].map(
+                    (x) => (
+                      <th key={x} className="px-5 py-4">
+                        {x}
+                      </th>
+                    ),
+                  )}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-line">
+                {items.map((x) => (
+                  <tr key={x.id}>
+                    <td className="px-5 py-4">
+                      <Link
+                        to={"/results/" + x.id}
+                        state={{ analysis: x }}
+                        className="font-medium text-forest"
+                      >
+                        {x.fileName}
+                      </Link>
+                    </td>
+                    <td className="px-5 py-4 text-sm text-slate-500">
+                      {formatDate(x.analyzedAt)}
+                    </td>
+                    <td className="px-5 py-4 text-sm">{x.detections.length}</td>
+                    <td className="px-5 py-4">
+                      <SeverityBadge severity={x.severityLabel} />
+                    </td>
+                    <td className="px-5 py-4 text-xs">Simulated</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      <ConfirmDialog
+        open={confirm}
+        title="Clear analysis history?"
+        description="This removes saved demo results from this browser."
+        onCancel={() => setConfirm(false)}
+        onConfirm={clear}
+      />
+    </div>
+  );
+}
